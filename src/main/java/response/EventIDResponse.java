@@ -1,34 +1,54 @@
 package response;
 
+/**
+ * Response object returned from the EventIDService class
+ */
 public class EventIDResponse {
 
+    /**
+     * handle of the user associated with referenced event
+     */
     private String associatedUsername;
+    /**
+     * unique string used to identify referenced event
+     */
     private String eventID;
+    /**
+     * unique string used to identify the linked person
+     */
     private String personID;
+    /**
+     * latitude measurement of referenced event location
+     */
     private float latitude;
+    /**
+     * longitude measurement of referenced event location
+     */
     private float longitude;
+    /**
+     * country of referenced event location
+     */
     private String country;
+    /**
+     * city of referenced event location
+     */
     private String city;
+    /**
+     * type of referenced event
+     */
     private String eventType;
+    /**
+     * year in which referenced event occurred
+     */
     private int year;
+    /**
+     * truth value to indicate if the action was successful
+     */
     private boolean success;
+    /**
+     * message reporting what occurred
+     */
     private String message;
-
-    public EventIDResponse(String associatedUsername, String eventID, String personID,
-                           float latitude, float longitude, String country, String city,
-                           String eventType, int year, boolean success, String message) {
-        this.associatedUsername = associatedUsername;
-        this.eventID = eventID;
-        this.personID = personID;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.country = country;
-        this.city = city;
-        this.eventType = eventType;
-        this.year = year;
-        this.success = success;
-        this.message = message;
-    }
 
     public String getAssociatedUsername() {
         return associatedUsername;

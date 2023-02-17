@@ -1,32 +1,50 @@
 package response;
 
+/**
+ * Response object returned from the PersonIDService class
+ */
 public class PersonIDResponse {
 
+    /**
+     * handle of the user associated with the referenced person
+     */
     private String associatedUsername;
+    /**
+     * unique string used to identify the referenced person
+     */
     private String personID;
+    /**
+     * first name of the referenced person
+     */
     private String firstName;
+    /**
+     * last name of the referenced person
+     */
     private String lastName;
+    /**
+     * gender of the referenced person
+     */
     private String gender;
+    /**
+     * unique string used to identify the father
+     */
     private String fatherID;
+    /**
+     * unique string used to identify the mother
+     */
     private String motherID;
+    /**
+     * unique string used to identify the spouse
+     */
     private String spouseID;
+    /**
+     * truth value to indicate if the action was successful
+     */
     private boolean success;
+    /**
+     * message reporting what occurred
+     */
     private String message;
-
-    public PersonIDResponse(String associatedUsername, String personID, String firstName,
-                            String lastName, String gender, String fatherID, String motherID,
-                            String spouseID, boolean success, String message) {
-        this.associatedUsername = associatedUsername;
-        this.personID = personID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.fatherID = fatherID;
-        this.motherID = motherID;
-        this.spouseID = spouseID;
-        this.success = success;
-        this.message = message;
-    }
 
     public String getAssociatedUsername() {
         return associatedUsername;

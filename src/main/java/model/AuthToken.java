@@ -8,11 +8,11 @@ import java.util.Objects;
 public class AuthToken {
 
     /**
-     * String given to the user for authentication
+     * string given to the user for authentication
      */
     private String authtoken;
     /**
-     * Handle used to identify the user
+     * handle used to identify the user
      */
     private String username;
 

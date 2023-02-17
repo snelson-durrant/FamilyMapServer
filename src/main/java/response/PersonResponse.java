@@ -2,17 +2,23 @@ package response;
 
 import model.Person;
 
+/**
+ * Response object returned from the PersonService class
+ */
 public class PersonResponse {
 
+    /**
+     * array of Person objects found by the service
+     */
     private Person[] data;
+    /**
+     * truth value to indicate if the action was successful
+     */
     private boolean success;
+    /**
+     * message reporting what occurred
+     */
     private String message;
-
-    public PersonResponse(Person[] data, boolean success, String message) {
-        this.data = data;
-        this.success = success;
-        this.message = message;
-    }
 
     public Person[] getData() {
         return data;

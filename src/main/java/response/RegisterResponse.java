@@ -1,22 +1,30 @@
 package response;
 
-// used for LoginResponse
+/**
+ * Response object returned from the RegisterService and LoginService classes
+ */
 public class RegisterResponse {
 
+    /**
+     * string given to the user for authentication
+     */
     private String authtoken;
+    /**
+     * handle of the referenced user
+     */
     private String username;
+    /**
+     * unique string of the person linked to the referenced user
+     */
     private String personID;
+    /**
+     * truth value to indicate if the action was successful
+     */
     private boolean success;
+    /**
+     * message reporting what occurred
+     */
     private String message;
-
-    public RegisterResponse(String authtoken, String username, String personID, boolean success,
-                            String message) {
-        this.authtoken = authtoken;
-        this.username = username;
-        this.personID = personID;
-        this.success = success;
-        this.message = message;
-    }
 
     public String getAuthtoken() {
         return authtoken;

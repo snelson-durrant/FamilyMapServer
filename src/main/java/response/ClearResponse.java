@@ -1,15 +1,18 @@
 package response;
 
-// used for FillResponse, LoadResponse
+/**
+ * Response object returned from the ClearService, FillService, and LoadService classes
+ */
 public class ClearResponse {
 
+    /**
+     * message reporting what occurred
+     */
     private String message;
+    /**
+     * truth value to indicate if the action was successful
+     */
     private boolean success;
-
-    public ClearResponse(String message, boolean success) {
-        this.message = message;
-        this.success = success;
-    }
 
     public String getMessage() {
         return message;
