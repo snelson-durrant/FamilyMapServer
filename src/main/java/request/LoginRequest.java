@@ -1,14 +1,18 @@
 package request;
 
+/**
+ * Request object given to the LoginService Class
+ */
 public class LoginRequest {
 
+    /**
+     * handle of the user to be logged in
+     */
     private String username;
+    /**
+     * password of the user to be logged in
+     */
     private String password;
-
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username;

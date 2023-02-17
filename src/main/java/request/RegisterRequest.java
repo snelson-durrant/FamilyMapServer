@@ -1,23 +1,34 @@
 package request;
 
+/**
+ * Request object given to the RegisterService Class
+ */
 public class RegisterRequest {
 
+    /**
+     * handle of the user to be registered
+     */
     private String username;
+    /**
+     * password of the user to be registered
+     */
     private String password;
+    /**
+     * email account of the user to be registered
+     */
     private String email;
+    /**
+     * first name of the user to be registered
+     */
     private String firstName;
+    /**
+     * last name of the user to be registered
+     */
     private String lastName;
+    /**
+     * gender of the user to be registered
+     */
     private String gender;
-
-    public RegisterRequest(String username, String password, String email, String firstName,
-                           String lastName, String gender) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-    }
 
     public String getUsername() {
         return username;

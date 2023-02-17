@@ -2,17 +2,23 @@ package request;
 
 import model.*;
 
+/**
+ * Request object given to the LoadService Class
+ */
 public class LoadRequest {
 
+    /**
+     * array of User objects to be loaded
+     */
     User[] users;
+    /**
+     * array of Person objects to be loaded
+     */
     Person[] persons;
+    /**
+     * array of Event objects to be loaded
+     */
     Event[] events;
-
-    public LoadRequest(User[] users, Person[] persons, Event[] events) {
-        this.users = users;
-        this.persons = persons;
-        this.events = events;
-    }
 
     public User[] getUsers() {
         return users;

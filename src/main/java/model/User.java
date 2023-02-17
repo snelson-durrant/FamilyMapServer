@@ -2,16 +2,50 @@ package model;
 
 import java.util.Objects;
 
+/**
+ * Model class for User data
+ */
 public class User {
 
+        /**
+         * handle used to identify the user
+         */
         private String username;
+        /**
+         * password used by the user to log in
+         */
         private String password;
+        /**
+         * email account of the user
+         */
         private String email;
+        /**
+         * first name of the user
+         */
         private String firstName;
+        /**
+         * last name of the user
+         */
         private String lastName;
+        /**
+         * gender of the user
+         */
         private String gender;
+        /**
+         * unique string used to identify the person linked to the user
+         */
         private String personID;
 
+        /**
+         * Creates a User object
+         * @param username handle used to identify the user
+         * @param password password used by the user to log in
+         * @param email email account of the user
+         * @param firstName first name of the user
+         * @param lastName last name of the user
+         * @param gender gender of the user
+         * @param personID unique string used to identify the person linked to the user
+         */
         public User(String username, String password, String email, String firstName,
                     String lastName, String gender, String personID) {
                 this.username = username;
@@ -79,6 +113,11 @@ public class User {
                 this.personID = personID;
         }
 
+        /**
+         * Overrides the equals() function to be true only when all private variables are the same
+         * @param o
+         * @return
+         */
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;

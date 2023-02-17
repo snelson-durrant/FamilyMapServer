@@ -2,17 +2,55 @@ package model;
 
 import java.util.Objects;
 
+/**
+ * Model class for Person data
+ */
 public class Person {
 
+    /**
+     * unique string used to identify the person
+     */
     private String personID;
+    /**
+     * handle of the user associated with the person
+     */
     private String associatedUsername;
+    /**
+     * first name of the person
+     */
     private String firstName;
+    /**
+     * last name of the person
+     */
     private String lastName;
+    /**
+     * gender of the person
+     */
     private String gender;
+    /**
+     * unique string used to identify the father
+     */
     private String fatherID;
+    /**
+     * unique string used to identify the mother
+     */
     private String motherID;
+    /**
+     * unique string used to identify the spouse
+     */
     private String spouseID;
 
+    /**
+     * Creates a Person object
+     * @param personID unique string used to identify the person
+     * @param associatedUsername handle of the user associated with the person
+     * @param firstName first name of the person
+     * @param lastName last name of the person
+     * @param gender gender of the person
+     * @param fatherID unique string used to identify the father
+     * @param motherID unique string used to identify the mother
+     * @param spouseID unique string used to identify the spouse
+     */
     public Person(String personID, String associatedUsername, String firstName, String lastName,
                   String gender, String fatherID, String motherID, String spouseID) {
         this.personID = personID;
@@ -89,6 +127,11 @@ public class Person {
         this.spouseID = spouseID;
     }
 
+    /**
+     * Overrides the equals() function to be true only when all private variables are the same
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

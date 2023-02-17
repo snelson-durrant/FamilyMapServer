@@ -4,13 +4,29 @@ import model.Event;
 
 import java.sql.*;
 
+/**
+ * Interfaces with the Event table in the database
+ */
 public class EventDAO {
+
+    /**
+     * database connection
+     */
     private final Connection conn;
 
+    /**
+     * Creates an EventDAO object
+     * @param conn the database connection
+     */
     public EventDAO(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     * Inserts the data from an Event object into the database
+     * @param event the Event object
+     * @throws DataAccessException
+     */
     public void insert(Event event) throws DataAccessException {
         //We can structure our string to be similar to a sql command, but if we insert question
         //marks we can change them later with help from the statement
@@ -37,6 +53,12 @@ public class EventDAO {
         }
     }
 
+    /**
+     * Finds the database entry associated with the eventID
+     * @param eventID the event's identification
+     * @return an Event object containing the found data
+     * @throws DataAccessException
+     */
     public Event find(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs;
@@ -60,6 +82,10 @@ public class EventDAO {
 
     }
 
+    /**
+     * Clears the Event table from the database
+     * @throws DataAccessException
+     */
     public void clear() throws DataAccessException {
         String sql = "DELETE FROM Events";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
