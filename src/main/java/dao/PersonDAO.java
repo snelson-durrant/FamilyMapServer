@@ -1,5 +1,6 @@
 package dao;
 
+import model.Event;
 import model.Person;
 
 import java.sql.*;
@@ -44,5 +45,20 @@ public class PersonDAO {
      * @throws DataAccessException
      */
     public void clear() throws DataAccessException { }
+
+    /**
+     * Finds all the people associated with a certain user
+     * @param username handle used to identify the user
+     * @return an array of People objects
+     */
+    public Person[] findUserPeople(String username) {
+        return null;
+    }
+
+    /**
+     * Removes all the people associated with a certain user
+     * @param username handle used to identify the user
+     */
+    public void clearUserPeople(String username) { }
 
 }

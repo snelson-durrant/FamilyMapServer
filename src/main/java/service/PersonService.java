@@ -10,8 +10,9 @@ public class PersonService {
     /**
      * Return all family member of the current user
      * @return the associated response object
+     * @param authtoken string given for authentication
      */
-    public PersonResponse person() {
+    public PersonResponse person(String authtoken) {
         return null;
     }
 

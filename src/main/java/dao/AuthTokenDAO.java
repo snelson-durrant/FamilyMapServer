@@ -31,11 +31,11 @@ public class AuthTokenDAO {
 
     /**
      * Finds the database entry associated with the username
-     * @param username the user's identification
+     * @param authtoken unique string used for authentication
      * @return an AuthToken object containing the found data
      * @throws DataAccessException
      */
-    public AuthToken find(String username) throws DataAccessException {
+    public AuthToken find(String authtoken) throws DataAccessException {
         return null;
     }
 

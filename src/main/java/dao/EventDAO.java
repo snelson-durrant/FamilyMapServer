@@ -95,4 +95,20 @@ public class EventDAO {
             throw new DataAccessException("Error encountered while clearing the event table");
         }
     }
+
+    /**
+     * Finds all the events associated with a certain user
+     * @param username handle used to identify the user
+     * @return an array of Event objects
+     */
+    public Event[] findUserEvents(String username) {
+        return null;
+    }
+
+    /**
+     * Removes all the events associated with a certain user
+     * @param username handle used to identify the user
+     */
+    public void clearUserEvents(String username) { }
+
 }

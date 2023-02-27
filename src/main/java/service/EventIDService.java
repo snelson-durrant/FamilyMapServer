@@ -10,8 +10,10 @@ public class EventIDService {
     /**
      * Return a single Event object with the specified ID
      * @return the associated response object
+     * @param authtoken string given for authentication
+     * @param eventID unique string used to identify the event
      */
-    EventIDResponse eventID() {
+    public EventIDResponse eventID(String authtoken, String eventID) {
         return null;
     }
 

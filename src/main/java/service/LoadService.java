@@ -1,7 +1,7 @@
 package service;
 
 import request.LoadRequest;
-import response.ClearResponse;
+import response.TableModResponse;
 
 /**
  * Clears the database and loads in new data
@@ -13,7 +13,7 @@ public class LoadService {
      * @param loadRequest data to load
      * @return the associated response object
      */
-    public ClearResponse load(LoadRequest loadRequest) {
+    public TableModResponse load(LoadRequest loadRequest) {
         return null;
     }
 

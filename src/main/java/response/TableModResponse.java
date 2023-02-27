@@ -3,7 +3,7 @@ package response;
 /**
  * Response object returned from the ClearService, FillService, and LoadService classes
  */
-public class ClearResponse {
+public class TableModResponse {
 
     /**
      * message reporting what occurred

@@ -10,8 +10,10 @@ public class PersonIDService {
     /**
      * Return a single Person object with the specified ID
      * @return the associated response object
+     * @param authtoken string given for authentication
+     * @param personID unique string used to identify the person
      */
-    public PersonIDResponse personID() {
+    public PersonIDResponse personID(String authtoken, String personID) {
         return null;
     }
 
