@@ -1,9 +1,11 @@
 package request;
 
+import json.JSONObject;
+
 /**
  * Request object given to the LoginService Class
  */
-public class LoginRequest {
+public class LoginRequest implements JSONObject {
 
     /**
      * handle of the user to be logged in

@@ -1,9 +1,11 @@
 package response;
 
+import json.JSONObject;
+
 /**
  * Response object returned from the PersonIDService class
  */
-public class PersonIDResponse {
+public class PersonIDResponse implements JSONObject {
 
     /**
      * handle of the user associated with the referenced person

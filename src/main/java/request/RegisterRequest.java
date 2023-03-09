@@ -1,9 +1,11 @@
 package request;
 
+import json.JSONObject;
+
 /**
  * Request object given to the RegisterService Class
  */
-public class RegisterRequest {
+public class RegisterRequest implements JSONObject {
 
     /**
      * handle of the user to be registered

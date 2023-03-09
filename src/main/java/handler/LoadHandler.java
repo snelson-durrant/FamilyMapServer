@@ -1,14 +1,16 @@
 package handler;
 
-import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
-import dao.DataAccessException;
-import json.Encoder;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import json.*;
+import request.LoadRequest;
 import response.TableModResponse;
-import service.ClearService;
+import service.LoadService;
 
-public class ClearHandler implements HttpHandler {
+import java.io.*;
+import java.net.HttpURLConnection;
+
+public class LoadHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -19,11 +21,14 @@ public class ClearHandler implements HttpHandler {
 
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
 
-                ClearService hlClearService = new ClearService();
-                TableModResponse hlClearResponse = hlClearService.clear();
+                Reader reader = new InputStreamReader(exchange.getRequestBody());
+                LoadRequest loadReqObj = Decoder.decodeLoadReq(reader);
+
+                LoadService hlLoadService = new LoadService();
+                TableModResponse hlLoadResponse = hlLoadService.load(loadReqObj);
 
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                String jsonResp = Encoder.encode(hlClearResponse);
+                String jsonResp = Encoder.encode(hlLoadResponse);
                 OutputStream respBody = exchange.getResponseBody();
                 writeString(jsonResp, respBody);
                 respBody.close();

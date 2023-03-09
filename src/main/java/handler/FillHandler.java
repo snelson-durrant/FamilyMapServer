@@ -1,14 +1,18 @@
 package handler;
 
-import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
-import dao.DataAccessException;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import json.Encoder;
 import response.TableModResponse;
 import service.ClearService;
+import service.FillService;
 
-public class ClearHandler implements HttpHandler {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+
+public class FillHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -19,11 +23,22 @@ public class ClearHandler implements HttpHandler {
 
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
 
-                ClearService hlClearService = new ClearService();
-                TableModResponse hlClearResponse = hlClearService.clear();
+                FillService hlFillService = new FillService();
+                String[] parameters = exchange.getRequestURI().toString().split("/");
+                TableModResponse hlFillResponse;
+
+                if (parameters.length == 3) {
+                    hlFillResponse = hlFillService.fill(parameters[2], 4); // default #
+                } else if (parameters.length == 4) {
+                    hlFillResponse = hlFillService.fill(parameters[2], Integer.parseInt(parameters[3]));
+                } else {
+                    hlFillResponse = new TableModResponse();
+                    hlFillResponse.setSuccess(false);
+                    hlFillResponse.setMessage("Invalid number of parameters.");
+                }
 
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                String jsonResp = Encoder.encode(hlClearResponse);
+                String jsonResp = Encoder.encode(hlFillResponse);
                 OutputStream respBody = exchange.getResponseBody();
                 writeString(jsonResp, respBody);
                 respBody.close();

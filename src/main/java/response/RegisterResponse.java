@@ -1,9 +1,11 @@
 package response;
 
+import json.JSONObject;
+
 /**
  * Response object returned from the RegisterService and LoginService classes
  */
-public class RegisterResponse {
+public class RegisterResponse implements JSONObject {
 
     /**
      * string given to the user for authentication

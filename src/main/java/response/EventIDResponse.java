@@ -1,9 +1,11 @@
 package response;
 
+import json.JSONObject;
+
 /**
  * Response object returned from the EventIDService class
  */
-public class EventIDResponse {
+public class EventIDResponse implements JSONObject {
 
     /**
      * handle of the user associated with referenced event

@@ -1,11 +1,12 @@
 package response;
 
+import json.JSONObject;
 import model.Person;
 
 /**
  * Response object returned from the PersonService class
  */
-public class PersonResponse {
+public class PersonResponse implements JSONObject {
 
     /**
      * array of Person objects found by the service

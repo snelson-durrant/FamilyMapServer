@@ -1,9 +1,11 @@
 package response;
 
+import json.JSONObject;
+
 /**
  * Response object returned from the ClearService, FillService, and LoadService classes
  */
-public class TableModResponse {
+public class TableModResponse implements JSONObject {
 
     /**
      * message reporting what occurred

@@ -1,11 +1,12 @@
 package response;
 
+import json.JSONObject;
 import model.Event;
 
 /**
  * Response object returned from the EventService class
  */
-public class EventResponse {
+public class EventResponse implements JSONObject {
 
     /**
      * array of Event objects found by the service

@@ -1,11 +1,12 @@
 package request;
 
+import json.JSONObject;
 import model.*;
 
 /**
  * Request object given to the LoadService Class
  */
-public class LoadRequest {
+public class LoadRequest implements JSONObject {
 
     /**
      * array of User objects to be loaded
