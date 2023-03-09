@@ -30,8 +30,8 @@ public class UserDAO {
      */
     public void insert(User user) throws DataAccessException {
 
-        String sql = "INSERT INTO Users (Username, Password, Email, FirstName, LastName, " +
-                "Gender, PersonID) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO User (username, password, email, firstName, lastName, " +
+                "gender, personID) VALUES(?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
@@ -59,14 +59,14 @@ public class UserDAO {
 
         User user;
         ResultSet rs;
-        String sql = "SELECT * FROM Users WHERE Username = ?;";
+        String sql = "SELECT * FROM User WHERE username = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                user = new User(rs.getString("Username"), rs.getString("Password"),
-                        rs.getString("Email"), rs.getString("FirstName"), rs.getString("LastName"),
-                        rs.getString("Gender"), rs.getString("PersonID"));
+                user = new User(rs.getString("username"), rs.getString("password"),
+                        rs.getString("email"), rs.getString("firstName"), rs.getString("lastName"),
+                        rs.getString("gender"), rs.getString("personID"));
                 return user;
             } else {
                 return null;
@@ -84,7 +84,7 @@ public class UserDAO {
      */
     public void clear() throws DataAccessException {
 
-        String sql = "DELETE FROM Users";
+        String sql = "DELETE FROM User";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {

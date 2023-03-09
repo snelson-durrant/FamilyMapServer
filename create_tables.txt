@@ -1,46 +1,46 @@
-drop table if exists Users;
-drop table if exists Persons;
-drop table if exists Events;
-drop table if exists Authtokens;
+drop table if exists User;
+drop table if exists Person;
+drop table if exists Event;
+drop table if exists Authtoken;
 
-create table Users
+create table User
 (
-	Username varchar(255) not null primary key,
-	Password varchar(255) not null,
-	Email varchar(255) not null,
-	FirstName varchar(255) not null,
-	LastName varchar(255) not null,
-	Gender varchar not null,
-	PersonID varchar(255) not null
+	username varchar(255) not null primary key,
+	password varchar(255) not null,
+	email varchar(255) not null,
+	firstName varchar(255) not null,
+	lastName varchar(255) not null,
+	gender varchar not null,
+	personID varchar(255) not null
 );
 
-create table Persons
+create table Person
 (
-	PersonID varchar(255) not null primary key,
-	AssociatedUsername varchar(255) not null,
-	FirstName varchar(255) not null,
-	LastName varchar(255) not null,
-	Gender varchar not null,
-	FatherID varchar(255),
-	MotherID varchar(255),
-	SpouseID varchar(255)
+	personID varchar(255) not null primary key,
+	associatedUsername varchar(255) not null,
+	firstName varchar(255) not null,
+	lastName varchar(255) not null,
+	gender varchar not null,
+	fatherID varchar(255),
+	motherID varchar(255),
+	spouseID varchar(255)
 );
 
-create table Events
+create table Event
 (
-	EventID varchar(255) not null primary key,
-	AssociatedUsername varchar(255) not null,
-	PersonID varchar(255) not null,
-	Latitude real not null,
-	Longitude real not null,
-	Country varchar(255) not null,
-	City varchar(255) not null,
-	EventType varchar(255) not null,
-	Year integer not null
+	eventID varchar(255) not null primary key,
+	associatedUsername varchar(255) not null,
+	personID varchar(255) not null,
+	latitude real not null,
+	longitude real not null,
+	country varchar(255) not null,
+	city varchar(255) not null,
+	eventType varchar(255) not null,
+	year integer not null
 );
 
-create table Authtokens
+create table Authtoken
 (
-	Authtoken varchar(255) not null primary key,
-	Username varchar(255) not null
+	authtoken varchar(255) not null primary key,
+	username varchar(255) not null
 );

@@ -31,8 +31,8 @@ public class PersonDAO {
      */
     public void insert(Person person) throws DataAccessException {
 
-        String sql = "INSERT INTO Persons (PersonID, AssociatedUsername, FirstName, LastName, " +
-                "Gender, FatherID, MotherID, SpouseID) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Person (personID, associatedUsername, firstName, lastName, " +
+                "gender, fatherID, motherID, spouseID) VALUES(?,?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, person.getPersonID());
             stmt.setString(2, person.getAssociatedUsername());
@@ -61,14 +61,14 @@ public class PersonDAO {
 
         Person person;
         ResultSet rs;
-        String sql = "SELECT * FROM Persons WHERE PersonID = ?;";
+        String sql = "SELECT * FROM Person WHERE personID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
-                        rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Gender"),
-                        rs.getString("FatherID"), rs.getString("MotherID"), rs.getString("SpouseID"));
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
                 return person;
             } else {
                 return null;
@@ -86,7 +86,7 @@ public class PersonDAO {
      */
     public void clear() throws DataAccessException {
 
-        String sql = "DELETE FROM Persons";
+        String sql = "DELETE FROM Person";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {

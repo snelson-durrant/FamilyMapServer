@@ -9,7 +9,6 @@ import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//We will use this to test that our insert method is working and failing in the right ways
 public class UserDAOTest {
     private Database db;
     private User bestUser;
