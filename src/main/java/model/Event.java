@@ -47,7 +47,7 @@ public class Event {
     /**
      * Creates an Event object
      * @param eventID unique string used to identify the event
-     * @param username handle of the user associated with the event
+     * @param associatedUsername handle of the user associated with the event
      * @param personID unique string used to identify the person
      * @param latitude latitude measurement of event location
      * @param longitude longitude measurement of event location
@@ -56,10 +56,10 @@ public class Event {
      * @param eventType type of event
      * @param year year in which the event occurred
      */
-    public Event(String eventID, String username, String personID, Float latitude, Float longitude,
+    public Event(String eventID, String associatedUsername, String personID, Float latitude, Float longitude,
                  String country, String city, String eventType, Integer year) {
         this.eventID = eventID;
-        this.associatedUsername = username;
+        this.associatedUsername = associatedUsername;
         this.personID = personID;
         this.latitude = latitude;
         this.longitude = longitude;

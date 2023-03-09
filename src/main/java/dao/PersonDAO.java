@@ -5,6 +5,7 @@ import model.Person;
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Interfaces with the Person table in the database
@@ -101,14 +102,46 @@ public class PersonDAO {
      * @param username handle used to identify the user
      * @return an array of People objects
      */
-    public Person[] findUserPeople(String username) {
-        return null;
+    public Person[] findUserPeople(String username) throws DataAccessException {
+
+        ArrayList<Person> ListOfPeople = new ArrayList<>();
+        Person person;
+        ResultSet rs;
+        String sql = "SELECT * FROM Person WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                ListOfPeople.add(person);
+            }
+            Person[] people = new Person[ListOfPeople.size()];
+            people = ListOfPeople.toArray(people);
+            return people;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding a person in the database");
+        }
+
     }
 
     /**
      * Removes all the people associated with a certain user
      * @param username handle used to identify the user
      */
-    public void clearUserPeople(String username) { }
+    public void clearUserPeople(String username) throws DataAccessException {
+
+        String sql = "DELETE FROM Person WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding a person in the database");
+        }
+
+    }
 
 }

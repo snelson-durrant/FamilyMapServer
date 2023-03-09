@@ -3,6 +3,7 @@ package dao;
 import model.Event;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Interfaces with the Event table in the database
@@ -101,14 +102,47 @@ public class EventDAO {
      * @param username handle used to identify the user
      * @return an array of Event objects
      */
-    public Event[] findUserEvents(String username) {
-        return null;
+    public Event[] findUserEvents(String username) throws DataAccessException {
+
+        ArrayList<Event> ListOfEvents = new ArrayList<>();
+        Event event;
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                ListOfEvents.add(event);
+            }
+            Event[] events = new Event[ListOfEvents.size()];
+            events = ListOfEvents.toArray(events);
+            return events;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
+
     }
 
     /**
      * Removes all the events associated with a certain user
      * @param username handle used to identify the user
      */
-    public void clearUserEvents(String username) { }
+    public void clearUserEvents(String username) throws DataAccessException {
+
+        String sql = "DELETE FROM Event WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
+
+    }
 
 }

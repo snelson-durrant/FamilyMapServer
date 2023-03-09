@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventDAOTest {
     private Database db;
     private Event bestEvent;
+    private Event secondEvent;
+    private Event[] eventArray;
     private EventDAO eDao;
 
     @BeforeEach
@@ -25,6 +27,12 @@ public class EventDAOTest {
         bestEvent = new Event("Biking_123A", "Gale", "Gale123A",
                 35.9f, 140.1f, "Japan", "Ushiku",
                 "Biking_Around", 2016);
+        secondEvent = new Event("Walking_456B", "Gale", "Gale123A",
+                1f, 2f, "USA", "Provo",
+                "Walking_Around", 2023);
+        eventArray = new Event[2];
+        eventArray[0] = bestEvent;
+        eventArray[1] = secondEvent;
 
         // Here, we'll open the connection in preparation for the test case to use it
         Connection conn = db.getConnection();
@@ -97,4 +105,44 @@ public class EventDAOTest {
         eDao.clear();
         assertNull(eDao.find(bestEvent.getEventID()));
     }
+
+    @Test
+    public void findUserEventsPass() throws DataAccessException {
+
+        eDao.insert(bestEvent);
+        eDao.insert(secondEvent);
+        Event[] compareTest = eDao.findUserEvents(bestEvent.getAssociatedUsername());
+        assertNotNull(compareTest);
+        assertEquals(eventArray.length, compareTest.length);
+    }
+
+    @Test
+    public void findUserEventsFail() throws DataAccessException {
+
+        eDao.insert(bestEvent);
+        eDao.insert(secondEvent);
+        Event[] compareTest = eDao.findUserEvents("unassociatedUsername");
+        assertTrue(compareTest.length == 0);
+    }
+
+    @Test
+    public void clearUserEventsPass() throws DataAccessException {
+
+        eDao.insert(bestEvent);
+        eDao.insert(secondEvent);
+        eDao.clearUserEvents(bestEvent.getAssociatedUsername());
+        Event[] compareTest = eDao.findUserEvents(bestEvent.getAssociatedUsername());
+        assertTrue(compareTest.length == 0);
+    }
+
+    @Test
+    public void clearUserEventsFail() throws DataAccessException {
+
+        eDao.insert(bestEvent);
+        eDao.insert(secondEvent);
+        eDao.clearUserEvents("unassociatedUsername");
+        Event[] compareTest = eDao.findUserEvents(bestEvent.getAssociatedUsername());
+        assertEquals(eventArray.length, compareTest.length);
+    }
+
 }

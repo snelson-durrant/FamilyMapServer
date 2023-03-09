@@ -1,5 +1,6 @@
 package dao;
 
+import model.Event;
 import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PersonDAOTest {
     private Database db;
     private Person bestPerson;
+    private Person secondPerson;
+    private Person[] personArray;
     private PersonDAO eDao;
 
     @BeforeEach
@@ -20,6 +23,11 @@ public class PersonDAOTest {
         db = new Database();
         bestPerson = new Person("5fh6&k_ui", "john.smith123", "John",
                 "Smith", "m", "h7ydk1980", "fr$th78_g", "_jdf789yt");
+        secondPerson = new Person("7h5_&fjk890", "john.smith123", "Nelson",
+                "Durrant", "m", "asdk78sf", "sfdkj7810", "h_kfdsjfk");
+        personArray = new Person[2];
+        personArray[0] = bestPerson;
+        personArray[1] = secondPerson;
 
         Connection conn = db.getConnection();
         eDao = new PersonDAO(conn);
@@ -70,6 +78,45 @@ public class PersonDAOTest {
         assertEquals(bestPerson, eDao.find(bestPerson.getPersonID()));
         eDao.clear();
         assertNull(eDao.find(bestPerson.getPersonID()));
+    }
+
+    @Test
+    public void findUserPeoplePass() throws DataAccessException {
+
+        eDao.insert(bestPerson);
+        eDao.insert(secondPerson);
+        Person[] compareTest = eDao.findUserPeople(bestPerson.getAssociatedUsername());
+        assertNotNull(compareTest);
+        assertEquals(personArray.length, compareTest.length);
+    }
+
+    @Test
+    public void findUserPeopleFail() throws DataAccessException {
+
+        eDao.insert(bestPerson);
+        eDao.insert(secondPerson);
+        Person[] compareTest = eDao.findUserPeople("unassociatedUsername");
+        assertTrue(compareTest.length == 0);
+    }
+
+    @Test
+    public void clearUserPeoplePass() throws DataAccessException {
+
+        eDao.insert(bestPerson);
+        eDao.insert(secondPerson);
+        eDao.clearUserPeople(bestPerson.getAssociatedUsername());
+        Person[] compareTest = eDao.findUserPeople(bestPerson.getAssociatedUsername());
+        assertTrue(compareTest.length == 0);
+    }
+
+    @Test
+    public void clearUserPeopleFail() throws DataAccessException {
+
+        eDao.insert(bestPerson);
+        eDao.insert(secondPerson);
+        eDao.clearUserPeople("unassociatedUsername");
+        Person[] compareTest = eDao.findUserPeople(bestPerson.getAssociatedUsername());
+        assertEquals(personArray.length, compareTest.length);
     }
 
 }
