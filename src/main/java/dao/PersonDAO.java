@@ -1,8 +1,8 @@
 package dao;
 
 import json.Decoder;
-import json.LocationArray;
-import json.NameArray;
+import model.LocationArray;
+import model.NameArray;
 import model.Event;
 import model.Person;
 import model.User;
@@ -185,10 +185,8 @@ public class PersonDAO {
             String fatherEventID = UUID.randomUUID().toString();
             String motherEventID = UUID.randomUUID().toString();
             int marrInt = randomGen.nextInt(730);
-            int marrYear = randomGen.nextInt(32);
-            marrYear = marrYear + 13;
-
-            // TODO FIX OFFSET
+            int marrYear = randomGen.nextInt(30);
+            marrYear = marrYear + 15;
 
             Event fatherMarrEvent = new Event(fatherEventID, user.getUsername(), fatherID, locations.getLocation(marrInt).getLatitude(),
                     locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
@@ -199,15 +197,15 @@ public class PersonDAO {
             eventDAO.insert(fatherMarrEvent);
             eventDAO.insert(motherMarrEvent);
 
-            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, birthYear);
-            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, birthYear);
+            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, birthYear, eventDAO);
+            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, birthYear, eventDAO);
         }
 
         this.insert(person);
 
     }
 
-    private void recDataGeneration (User user, int gensLeft, String gender, String thisID, String spouseID, int birthYear) throws DataAccessException {
+    private void recDataGeneration (User user, int gensLeft, String gender, String thisID, String spouseID, int birthYear, EventDAO eDAO) throws DataAccessException {
 
         Person person;
         Random randomGen = new Random();
@@ -222,16 +220,49 @@ public class PersonDAO {
             person = new Person(thisID, user.getUsername(), femaleNames.getName(femaleInt), lastNames.getName(lastInt), "f");
             person.setSpouseID(spouseID);
         }
-        // generate birth and death events
+
+        String birthID = UUID.randomUUID().toString();
+        int birthInt = randomGen.nextInt(730);
+        String deathID = UUID.randomUUID().toString();
+        int deathInt = randomGen.nextInt(730);
+        int incBirth = randomGen.nextInt(45);
+        int incDeath = randomGen.nextInt(50);
+        birthYear = birthYear + incBirth;
+        int deathYear = birthYear + 50 + incDeath;
+
+        Event birthEvent = new Event(birthID, user.getUsername(), user.getPersonID(), locations.getLocation(birthInt).getLatitude(),
+                locations.getLocation(birthInt).getLongitude(), locations.getLocation(birthInt).getCountry(),
+                locations.getLocation(birthInt).getCity(), "birth", birthYear);
+        eDAO.insert(birthEvent);
+
+        Event deathEvent = new Event(deathID, user.getUsername(), user.getPersonID(), locations.getLocation(deathInt).getLatitude(),
+                locations.getLocation(deathInt).getLongitude(), locations.getLocation(deathInt).getCountry(),
+                locations.getLocation(deathInt).getCity(), "death", deathYear);
+        eDAO.insert(deathEvent);
 
         if (gensLeft > 0) {
             String fatherID = UUID.randomUUID().toString();
             String motherID = UUID.randomUUID().toString();
             person.setFatherID(fatherID);
             person.setMotherID(motherID);
-            // and marriage?
-            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, 0);
-            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, 0);
+
+            String fatherEventID = UUID.randomUUID().toString();
+            String motherEventID = UUID.randomUUID().toString();
+            int marrInt = randomGen.nextInt(730);
+            int marrYear = randomGen.nextInt(30);
+            marrYear = marrYear + 15;
+
+            Event fatherMarrEvent = new Event(fatherEventID, user.getUsername(), fatherID, locations.getLocation(marrInt).getLatitude(),
+                    locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
+                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+            Event motherMarrEvent = new Event(motherEventID, user.getUsername(), motherID, locations.getLocation(marrInt).getLatitude(),
+                    locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
+                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+            eDAO.insert(fatherMarrEvent);
+            eDAO.insert(motherMarrEvent);
+
+            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, 0, eDAO);
+            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, 0, eDAO);
         }
 
         this.insert(person);
