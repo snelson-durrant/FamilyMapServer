@@ -6,6 +6,9 @@ import model.Person;
 import model.User;
 import response.TableModResponse;
 
+import java.sql.SQLException;
+import java.util.UUID;
+
 /**
  * Populates the server's database with generated data
  */
@@ -25,22 +28,37 @@ public class FillService {
             db.openConnection();
             EventDAO eventDAO = new EventDAO(db.getConnection());
             PersonDAO personDAO = new PersonDAO(db.getConnection());
+            UserDAO userDAO = new UserDAO(db.getConnection());
 
             eventDAO.clearUserEvents(username);
             personDAO.clearUserPeople(username);
 
-            int eventCount = 0;
-            int personCount = 0;
+            TableModResponse response = new TableModResponse();
 
-            // TODO: ADD RECURSION HERE
+            // start of recursion
+            User thisUser = userDAO.find(username);
+            if (thisUser != null) {
+
+                personDAO.dataGeneration(thisUser, numOfGens);
+
+                int personCount = personDAO.findUserPeople(username).length;
+                int eventCount = eventDAO.findUserEvents(username).length;
+
+                response = new TableModResponse();
+                response.setMessage("Successfully added " + personCount +
+                        " persons and " + eventCount + " events to the database.");
+                response.setSuccess(true);
+
+            } else {
+
+                response = new TableModResponse();
+                response.setMessage("Error: Invalid username.");
+                response.setSuccess(true);
+            }
 
             db.closeConnection(true);
-
-            TableModResponse response = new TableModResponse();
-            response.setMessage("Successfully added " + personCount +
-                    " persons and " + eventCount + " events to the database.");
-            response.setSuccess(true);
             return response;
+
         }
         catch (DataAccessException e) {
 

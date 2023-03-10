@@ -2,6 +2,8 @@ package json;
 
 import com.google.gson.Gson;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.Reader;
 import request.*;
 
@@ -26,6 +28,28 @@ public class Decoder {
         Gson gson = new Gson();
         regReq = gson.fromJson(json, RegisterRequest.class);
         return regReq;
+    }
+
+    public static NameArray decodeNameArray (String fileName) {
+        Gson gson = new Gson();
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            return gson.fromJson(fileReader, NameArray.class);
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static LocationArray decodeLocationArray (String fileName) {
+        Gson gson = new Gson();
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            return gson.fromJson(fileReader, LocationArray.class);
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

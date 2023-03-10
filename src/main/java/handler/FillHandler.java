@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import json.Encoder;
 import response.TableModResponse;
-import service.ClearService;
 import service.FillService;
 
 import java.io.IOException;
@@ -30,11 +29,17 @@ public class FillHandler implements HttpHandler {
                 if (parameters.length == 3) {
                     hlFillResponse = hlFillService.fill(parameters[2], 4); // default #
                 } else if (parameters.length == 4) {
-                    hlFillResponse = hlFillService.fill(parameters[2], Integer.parseInt(parameters[3]));
+                    try {
+                        hlFillResponse = hlFillService.fill(parameters[2], Integer.parseInt(parameters[3]));
+                    } catch (NumberFormatException ex) {
+                        hlFillResponse = new TableModResponse();
+                        hlFillResponse.setSuccess(false);
+                        hlFillResponse.setMessage("Error: Invalid parameters.");
+                    }
                 } else {
                     hlFillResponse = new TableModResponse();
                     hlFillResponse.setSuccess(false);
-                    hlFillResponse.setMessage("Invalid number of parameters.");
+                    hlFillResponse.setMessage("Error: Invalid number of parameters.");
                 }
 
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
