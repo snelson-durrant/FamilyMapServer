@@ -25,19 +25,28 @@ public class RegisterHandler implements HttpHandler {
                 Reader reader = new InputStreamReader(exchange.getRequestBody());
                 RegisterRequest registerReqObj = Decoder.decodeRegisterReq(reader);
 
-                // TODO check for errors
-
                 RegisterService hlRegisterService = new RegisterService();
                 RegisterResponse hlRegisterResponse = hlRegisterService.register(registerReqObj);
+                String jsonResp;
 
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                String jsonResp = Encoder.encode(hlRegisterResponse);
+                if (hlRegisterResponse.isSuccess()) {
+
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                    jsonResp = Encoder.encode(hlRegisterResponse);
+                } else {
+
+                    TableModResponse errResponse = new TableModResponse();
+                    errResponse.setMessage(hlRegisterResponse.getMessage());
+                    errResponse.setSuccess(false);
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                    jsonResp = Encoder.encode(errResponse);
+                }
+
                 OutputStream respBody = exchange.getResponseBody();
                 writeString(jsonResp, respBody);
                 respBody.close();
 
                 success = true;
-
             }
 
             if (!success) {

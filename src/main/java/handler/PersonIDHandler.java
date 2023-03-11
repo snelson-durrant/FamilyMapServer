@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import json.Encoder;
 import response.PersonIDResponse;
-import response.PersonResponse;
 import response.TableModResponse;
 import service.PersonIDService;
 
@@ -27,8 +26,7 @@ public class PersonIDHandler implements HttpHandler {
                 if (reqHeaders.containsKey("Authorization")) {
 
                     String authToken = reqHeaders.getFirst("Authorization");
-                    // TODO add here
-                    if (authToken.equals("afj232hj2332")) {
+                    if (authToken != null) {
 
                         PersonIDService hlPersonIDService = new PersonIDService();
                         String[] parameters = exchange.getRequestURI().toString().split("/");
@@ -36,50 +34,61 @@ public class PersonIDHandler implements HttpHandler {
                         if (parameters.length == 3) {
 
                             PersonIDResponse hlPersonIDResponse = hlPersonIDService.personID(authToken, parameters[2]);
+                            String jsonResp;
 
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                            String jsonResp = Encoder.encode(hlPersonIDResponse);
+                            if (hlPersonIDResponse.isSuccess()) {
+
+                                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                                jsonResp = Encoder.encode(hlPersonIDResponse);
+                            } else {
+
+                                TableModResponse errResponse = new TableModResponse();
+                                errResponse.setMessage(hlPersonIDResponse.getMessage());
+                                errResponse.setSuccess(false);
+                                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                                jsonResp = Encoder.encode(errResponse);
+                            }
+
                             OutputStream respBody = exchange.getResponseBody();
                             writeString(jsonResp, respBody);
                             respBody.close();
-
                         } else {
 
-                            TableModResponse hlPersonIDResponse = new TableModResponse();
-                            hlPersonIDResponse.setSuccess(false);
-                            hlPersonIDResponse.setMessage("Error: Invalid number of parameters.");
+                            TableModResponse hlEventIDResponse = new TableModResponse();
+                            hlEventIDResponse.setSuccess(false);
+                            hlEventIDResponse.setMessage("Error: Invalid number of parameters.");
 
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                            String jsonResp = Encoder.encode(hlPersonIDResponse);
+                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                            String jsonResp = Encoder.encode(hlEventIDResponse);
                             OutputStream respBody = exchange.getResponseBody();
                             writeString(jsonResp, respBody);
                             respBody.close();
                         }
-
                     } else {
 
                         TableModResponse authErrResponse = new TableModResponse();
                         authErrResponse.setSuccess(false);
-                        authErrResponse.setMessage("Error: Invalid auth token.");
+                        authErrResponse.setMessage("Error: Invalid authtoken.");
 
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                         String jsonResp = Encoder.encode(authErrResponse);
                         OutputStream respBody = exchange.getResponseBody();
                         writeString(jsonResp, respBody);
                         respBody.close();
-
                     }
-                }
 
-                success = true;
+                    success = true;
+                }
             }
 
             if (!success) {
+
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
         }
         catch (IOException e) {
+
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
@@ -87,6 +96,7 @@ public class PersonIDHandler implements HttpHandler {
     }
 
     private void writeString(String str, OutputStream os) throws IOException {
+
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
         sw.flush();

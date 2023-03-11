@@ -28,8 +28,7 @@ public class EventIDHandler implements HttpHandler {
                 if (reqHeaders.containsKey("Authorization")) {
 
                     String authToken = reqHeaders.getFirst("Authorization");
-                    // TODO add here
-                    if (authToken.equals("afj232hj2332")) {
+                    if (authToken != null) {
 
                         EventIDService hlEventIDService = new EventIDService();
                         String[] parameters = exchange.getRequestURI().toString().split("/");
@@ -37,50 +36,61 @@ public class EventIDHandler implements HttpHandler {
                         if (parameters.length == 3) {
 
                             EventIDResponse hlEventIDResponse = hlEventIDService.eventID(authToken, parameters[2]);
+                            String jsonResp;
 
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                            String jsonResp = Encoder.encode(hlEventIDResponse);
+                            if (hlEventIDResponse.isSuccess()) {
+
+                                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                                jsonResp = Encoder.encode(hlEventIDResponse);
+                            } else {
+
+                                TableModResponse errResponse = new TableModResponse();
+                                errResponse.setMessage(hlEventIDResponse.getMessage());
+                                errResponse.setSuccess(false);
+                                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                                jsonResp = Encoder.encode(errResponse);
+                            }
+
                             OutputStream respBody = exchange.getResponseBody();
                             writeString(jsonResp, respBody);
                             respBody.close();
-
                         } else {
 
                             TableModResponse hlEventIDResponse = new TableModResponse();
                             hlEventIDResponse.setSuccess(false);
                             hlEventIDResponse.setMessage("Error: Invalid number of parameters.");
 
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                             String jsonResp = Encoder.encode(hlEventIDResponse);
                             OutputStream respBody = exchange.getResponseBody();
                             writeString(jsonResp, respBody);
                             respBody.close();
                         }
-
                     } else {
 
                         TableModResponse authErrResponse = new TableModResponse();
                         authErrResponse.setSuccess(false);
-                        authErrResponse.setMessage("Error: Invalid auth token.");
+                        authErrResponse.setMessage("Error: Invalid authtoken.");
 
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                         String jsonResp = Encoder.encode(authErrResponse);
                         OutputStream respBody = exchange.getResponseBody();
                         writeString(jsonResp, respBody);
                         respBody.close();
-
                     }
-                }
 
-                success = true;
+                    success = true;
+                }
             }
 
             if (!success) {
+
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
         }
         catch (IOException e) {
+
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
@@ -88,6 +98,7 @@ public class EventIDHandler implements HttpHandler {
     }
 
     private void writeString(String str, OutputStream os) throws IOException {
+
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
         sw.flush();

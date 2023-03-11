@@ -28,42 +28,53 @@ public class EventHandler implements HttpHandler {
                 if (reqHeaders.containsKey("Authorization")) {
 
                     String authToken = reqHeaders.getFirst("Authorization");
-                    // TODO add here
-                    if (authToken.equals("afj232hj2332")) {
+                    if (authToken != null) {
 
                         EventService hlEventService = new EventService();
                         EventResponse hlEventResponse = hlEventService.event(authToken);
+                        String jsonResp;
 
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-                        String jsonResp = Encoder.encode(hlEventResponse);
+                        if (hlEventResponse.isSuccess()) {
+
+                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                            jsonResp = Encoder.encode(hlEventResponse);
+                        } else {
+
+                            TableModResponse errResponse = new TableModResponse();
+                            errResponse.setMessage(hlEventResponse.getMessage());
+                            errResponse.setSuccess(false);
+                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                            jsonResp = Encoder.encode(errResponse);
+                        }
+
                         OutputStream respBody = exchange.getResponseBody();
                         writeString(jsonResp, respBody);
                         respBody.close();
-
                     } else {
 
                         TableModResponse authErrResponse = new TableModResponse();
                         authErrResponse.setSuccess(false);
-                        authErrResponse.setMessage("Error: Invalid auth token.");
+                        authErrResponse.setMessage("Error: Invalid authtoken.");
 
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                         String jsonResp = Encoder.encode(authErrResponse);
                         OutputStream respBody = exchange.getResponseBody();
                         writeString(jsonResp, respBody);
                         respBody.close();
-
                     }
-                }
 
-                success = true;
+                    success = true;
+                }
             }
 
             if (!success) {
+
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
         }
         catch (IOException e) {
+
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
@@ -71,6 +82,7 @@ public class EventHandler implements HttpHandler {
     }
 
     private void writeString(String str, OutputStream os) throws IOException {
+
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
         sw.flush();

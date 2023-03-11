@@ -25,6 +25,7 @@ public class FillService {
         Database db = new Database();
 
         try {
+
             db.openConnection();
             EventDAO eventDAO = new EventDAO(db.getConnection());
             PersonDAO personDAO = new PersonDAO(db.getConnection());
@@ -33,12 +34,12 @@ public class FillService {
             eventDAO.clearUserEvents(username);
             personDAO.clearUserPeople(username);
 
-            TableModResponse response = new TableModResponse();
-
-            // start of recursion
+            TableModResponse response;
             User thisUser = userDAO.find(username);
+
             if (thisUser != null) {
 
+                // start recursion
                 personDAO.dataGeneration(thisUser, numOfGens);
 
                 int personCount = personDAO.findUserPeople(username).length;
@@ -48,28 +49,24 @@ public class FillService {
                 response.setMessage("Successfully added " + personCount +
                         " persons and " + eventCount + " events to the database.");
                 response.setSuccess(true);
-
             } else {
 
                 response = new TableModResponse();
-                response.setMessage("Error: Invalid username.");
-                response.setSuccess(true);
+                response.setMessage("Error: Invalid username parameter.");
+                response.setSuccess(false);
             }
 
             db.closeConnection(true);
             return response;
-
         }
         catch (DataAccessException e) {
 
             db.closeConnection(false);
 
             TableModResponse response = new TableModResponse();
-            response.setMessage(e.getMessage());
+            response.setMessage("Error: Internal server error.");
             response.setSuccess(false);
             return response;
         }
-
     }
-
 }

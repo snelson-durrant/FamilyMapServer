@@ -20,6 +20,7 @@ public class LoadService {
         Database db = new Database();
 
         try {
+
             db.openConnection();
             AuthTokenDAO authDAO = new AuthTokenDAO(db.getConnection());
             EventDAO eventDAO = new EventDAO(db.getConnection());
@@ -35,14 +36,17 @@ public class LoadService {
             int eventCount = 0;
             int personCount = 0;
             for (User user : loadRequest.getUsers()) {
+
                 userDAO.insert(user);
                 userCount++;
             }
             for (Event event : loadRequest.getEvents()) {
+
                 eventDAO.insert(event);
                 eventCount++;
             }
             for (Person person : loadRequest.getPersons()) {
+
                 personDAO.insert(person);
                 personCount++;
             }
@@ -53,6 +57,7 @@ public class LoadService {
             response.setMessage("Successfully added " + userCount + " users, " + personCount +
                     " persons, and " + eventCount + " events to the database.");
             response.setSuccess(true);
+
             return response;
         }
         catch (DataAccessException e) {
@@ -60,11 +65,9 @@ public class LoadService {
             db.closeConnection(false);
 
             TableModResponse response = new TableModResponse();
-            response.setMessage(e.getMessage());
+            response.setMessage("Error: Internal server error.");
             response.setSuccess(false);
             return response;
         }
-
     }
-
 }

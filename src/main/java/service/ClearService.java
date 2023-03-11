@@ -3,8 +3,6 @@ package service;
 import response.TableModResponse;
 import dao.*;
 
-import javax.xml.crypto.Data;
-
 /**
  * Deletes all data from the database
  */
@@ -19,6 +17,7 @@ public class ClearService {
         Database db = new Database();
 
         try {
+
             db.openConnection();
             AuthTokenDAO authDAO = new AuthTokenDAO(db.getConnection());
             EventDAO eventDAO = new EventDAO(db.getConnection());
@@ -42,11 +41,9 @@ public class ClearService {
             db.closeConnection(false);
 
             TableModResponse response = new TableModResponse();
-            response.setMessage(e.getMessage());
+            response.setMessage("Error: Internal server error");
             response.setSuccess(false);
             return response;
         }
-
     }
-
 }
