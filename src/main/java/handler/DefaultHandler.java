@@ -24,10 +24,19 @@ public class DefaultHandler implements HttpHandler {
                 pathToFile = FileSystems.getDefault().getPath("web" + requestedURI);
             }
 
-            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-            Files.copy(pathToFile, exchange.getResponseBody());
-            exchange.getResponseBody().close();
+            File addrPage = new File(pathToFile.toUri());
+            if (!addrPage.isFile()) {
 
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+                pathToFile = FileSystems.getDefault().getPath("web/HTML/404.html");
+                Files.copy(pathToFile, exchange.getResponseBody());
+                exchange.getResponseBody().close();
+            } else {
+
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                Files.copy(pathToFile, exchange.getResponseBody());
+                exchange.getResponseBody().close();
+            }
         }
         catch (IOException e) {
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);

@@ -21,7 +21,6 @@ public class PersonDAO {
      * database connection
      */
     private final Connection conn;
-
     private NameArray maleNames;
     private NameArray femaleNames;
     private NameArray lastNames;
@@ -45,6 +44,7 @@ public class PersonDAO {
         String sql = "INSERT INTO Person (personID, associatedUsername, firstName, lastName, " +
                 "gender, fatherID, motherID, spouseID) VALUES(?,?,?,?,?,?,?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, person.getPersonID());
             stmt.setString(2, person.getAssociatedUsername());
             stmt.setString(3, person.getFirstName());
@@ -56,10 +56,10 @@ public class PersonDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
+
             e.printStackTrace();
             throw new DataAccessException("Error encountered while inserting a person into the database");
         }
-
     }
 
     /**
@@ -74,21 +74,24 @@ public class PersonDAO {
         ResultSet rs;
         String sql = "SELECT * FROM Person WHERE personID = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, personID);
             rs = stmt.executeQuery();
             if (rs.next()) {
+
                 person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
                         rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
                         rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
                 return person;
             } else {
+
                 return null;
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding a person in the database");
         }
-
     }
 
     /**
@@ -99,12 +102,13 @@ public class PersonDAO {
 
         String sql = "DELETE FROM Person";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
+
             stmt.executeUpdate();
         } catch (SQLException e) {
+
             e.printStackTrace();
             throw new DataAccessException("Error encountered while clearing a table in database");
         }
-
     }
 
     /**
@@ -119,22 +123,25 @@ public class PersonDAO {
         ResultSet rs;
         String sql = "SELECT * FROM Person WHERE associatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, username);
             rs = stmt.executeQuery();
             while (rs.next()) {
+
                 person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
                         rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
                         rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
                 ListOfPeople.add(person);
             }
+
             Person[] people = new Person[ListOfPeople.size()];
             people = ListOfPeople.toArray(people);
             return people;
         } catch (SQLException e) {
+
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding a person in the database");
         }
-
     }
 
     /**
@@ -145,17 +152,19 @@ public class PersonDAO {
 
         String sql = "DELETE FROM Person WHERE associatedUsername = ?;";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, username);
             stmt.executeUpdate();
         } catch (SQLException e) {
+
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding a person in the database");
         }
-
     }
 
     public void dataGeneration(User user, int gensLeft) throws DataAccessException {
 
+        // read in random data from JSON files
         this.maleNames = Decoder.decodeNameArray("json/mnames.json");
         this.femaleNames = Decoder.decodeNameArray("json/fnames.json");
         this.lastNames = Decoder.decodeNameArray("json/snames.json");
@@ -163,13 +172,14 @@ public class PersonDAO {
 
         EventDAO eventDAO = new EventDAO(conn);
 
+        // create user person object
         Person person = new Person(user.getPersonID(), user.getUsername(), user.getFirstName(),
                 user.getLastName(), user.getGender());
 
         String eventID = UUID.randomUUID().toString();
         Random randomGen = new Random();
         int birthInt = randomGen.nextInt(730);
-        int birthYear = 2000;
+        int birthYear = 2020;
 
         Event birthEvent = new Event(eventID, user.getUsername(), user.getPersonID(), locations.getLocation(birthInt).getLatitude(),
                 locations.getLocation(birthInt).getLongitude(), locations.getLocation(birthInt).getCountry(),
@@ -177,6 +187,7 @@ public class PersonDAO {
         eventDAO.insert(birthEvent);
 
         if (gensLeft > 0) {
+
             String fatherID = UUID.randomUUID().toString();
             String motherID = UUID.randomUUID().toString();
             person.setFatherID(fatherID);
@@ -185,24 +196,25 @@ public class PersonDAO {
             String fatherEventID = UUID.randomUUID().toString();
             String motherEventID = UUID.randomUUID().toString();
             int marrInt = randomGen.nextInt(730);
-            int marrYear = randomGen.nextInt(30);
-            marrYear = marrYear + 15;
+            int marrYear = randomGen.nextInt(10);
+            marrYear = birthYear - marrYear;
 
+            // set father and mother marriage dates at the same time
             Event fatherMarrEvent = new Event(fatherEventID, user.getUsername(), fatherID, locations.getLocation(marrInt).getLatitude(),
                     locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
-                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+                    locations.getLocation(marrInt).getCity(), "marriage", marrYear);
             Event motherMarrEvent = new Event(motherEventID, user.getUsername(), motherID, locations.getLocation(marrInt).getLatitude(),
                     locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
-                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+                    locations.getLocation(marrInt).getCity(), "marriage", marrYear);
             eventDAO.insert(fatherMarrEvent);
             eventDAO.insert(motherMarrEvent);
 
+            // start recursive function calls
             recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, birthYear, eventDAO);
             recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, birthYear, eventDAO);
         }
 
         this.insert(person);
-
     }
 
     private void recDataGeneration (User user, int gensLeft, String gender, String thisID, String spouseID, int birthYear, EventDAO eDAO) throws DataAccessException {
@@ -210,11 +222,15 @@ public class PersonDAO {
         Person person;
         Random randomGen = new Random();
         if (gender.equals("m")) {
+
+            // create father person object
             int maleInt = randomGen.nextInt(140);
             int lastInt = randomGen.nextInt(150);
             person = new Person(thisID, user.getUsername(), maleNames.getName(maleInt), lastNames.getName(lastInt), "m");
             person.setSpouseID(spouseID);
         } else {
+
+            // create mother person object
             int femaleInt = randomGen.nextInt(140);
             int lastInt = randomGen.nextInt(150);
             person = new Person(thisID, user.getUsername(), femaleNames.getName(femaleInt), lastNames.getName(lastInt), "f");
@@ -225,22 +241,23 @@ public class PersonDAO {
         int birthInt = randomGen.nextInt(730);
         String deathID = UUID.randomUUID().toString();
         int deathInt = randomGen.nextInt(730);
-        int incBirth = randomGen.nextInt(45);
+        int incBirth = randomGen.nextInt(25);
         int incDeath = randomGen.nextInt(50);
-        birthYear = birthYear + incBirth;
-        int deathYear = birthYear + 50 + incDeath;
+        int deathYear = birthYear + incDeath;
+        birthYear = birthYear - 20 - incBirth;
 
-        Event birthEvent = new Event(birthID, user.getUsername(), user.getPersonID(), locations.getLocation(birthInt).getLatitude(),
+        Event birthEvent = new Event(birthID, user.getUsername(), thisID, locations.getLocation(birthInt).getLatitude(),
                 locations.getLocation(birthInt).getLongitude(), locations.getLocation(birthInt).getCountry(),
                 locations.getLocation(birthInt).getCity(), "birth", birthYear);
         eDAO.insert(birthEvent);
 
-        Event deathEvent = new Event(deathID, user.getUsername(), user.getPersonID(), locations.getLocation(deathInt).getLatitude(),
+        Event deathEvent = new Event(deathID, user.getUsername(), thisID, locations.getLocation(deathInt).getLatitude(),
                 locations.getLocation(deathInt).getLongitude(), locations.getLocation(deathInt).getCountry(),
                 locations.getLocation(deathInt).getCity(), "death", deathYear);
         eDAO.insert(deathEvent);
 
         if (gensLeft > 0) {
+
             String fatherID = UUID.randomUUID().toString();
             String motherID = UUID.randomUUID().toString();
             person.setFatherID(fatherID);
@@ -249,24 +266,24 @@ public class PersonDAO {
             String fatherEventID = UUID.randomUUID().toString();
             String motherEventID = UUID.randomUUID().toString();
             int marrInt = randomGen.nextInt(730);
-            int marrYear = randomGen.nextInt(30);
-            marrYear = marrYear + 15;
+            int marrYear = randomGen.nextInt(10);
+            marrYear = birthYear - marrYear;
 
+            // set father and mother marriage dates at the same time
             Event fatherMarrEvent = new Event(fatherEventID, user.getUsername(), fatherID, locations.getLocation(marrInt).getLatitude(),
                     locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
-                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+                    locations.getLocation(marrInt).getCity(), "marriage", marrYear);
             Event motherMarrEvent = new Event(motherEventID, user.getUsername(), motherID, locations.getLocation(marrInt).getLatitude(),
                     locations.getLocation(marrInt).getLongitude(), locations.getLocation(marrInt).getCountry(),
-                    locations.getLocation(marrInt).getCity(), "marriage", birthYear + marrYear);
+                    locations.getLocation(marrInt).getCity(), "marriage", marrYear);
             eDAO.insert(fatherMarrEvent);
             eDAO.insert(motherMarrEvent);
 
-            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, 0, eDAO);
-            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, 0, eDAO);
+            // continue recursive function calls
+            recDataGeneration(user, gensLeft - 1, "m", fatherID, motherID, birthYear, eDAO);
+            recDataGeneration(user, gensLeft - 1, "f", motherID, fatherID, birthYear, eDAO);
         }
 
         this.insert(person);
-
     }
-
 }
