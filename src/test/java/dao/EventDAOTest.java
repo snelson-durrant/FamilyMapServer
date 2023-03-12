@@ -122,7 +122,7 @@ public class EventDAOTest {
         eDao.insert(bestEvent);
         eDao.insert(secondEvent);
         Event[] compareTest = eDao.findUserEvents("unassociatedUsername");
-        assertTrue(compareTest.length == 0);
+        assertEquals(0, compareTest.length);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class EventDAOTest {
         eDao.insert(secondEvent);
         eDao.clearUserEvents(bestEvent.getAssociatedUsername());
         Event[] compareTest = eDao.findUserEvents(bestEvent.getAssociatedUsername());
-        assertTrue(compareTest.length == 0);
+        assertEquals(0, compareTest.length);
     }
 
     @Test

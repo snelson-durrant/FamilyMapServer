@@ -1,6 +1,5 @@
 package dao;
 
-import model.Event;
 import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,7 +95,7 @@ public class PersonDAOTest {
         eDao.insert(bestPerson);
         eDao.insert(secondPerson);
         Person[] compareTest = eDao.findUserPeople("unassociatedUsername");
-        assertTrue(compareTest.length == 0);
+        assertEquals(0, compareTest.length);
     }
 
     @Test
@@ -106,7 +105,7 @@ public class PersonDAOTest {
         eDao.insert(secondPerson);
         eDao.clearUserPeople(bestPerson.getAssociatedUsername());
         Person[] compareTest = eDao.findUserPeople(bestPerson.getAssociatedUsername());
-        assertTrue(compareTest.length == 0);
+        assertEquals(0, compareTest.length);
     }
 
     @Test
@@ -118,5 +117,7 @@ public class PersonDAOTest {
         Person[] compareTest = eDao.findUserPeople(bestPerson.getAssociatedUsername());
         assertEquals(personArray.length, compareTest.length);
     }
+
+    // TODO ADD TESTS FOR DATA GENERATION
 
 }
