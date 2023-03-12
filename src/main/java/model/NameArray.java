@@ -3,7 +3,7 @@ package model;
 // class used to interpret JSON strings for random generation
 public class NameArray {
 
-    private String[] data;
+    private final String[] data;
 
     public NameArray() {
         data = new String[160];

@@ -21,7 +21,7 @@ public class LoginHandler implements HttpHandler {
 
         try {
 
-            if (exchange.getRequestMethod().toLowerCase().equals("post")) {
+            if (exchange.getRequestMethod().equalsIgnoreCase("post")) {
 
                 Reader reader = new InputStreamReader(exchange.getRequestBody());
                 LoginRequest loginReqObj = Decoder.decodeLoginReq(reader);

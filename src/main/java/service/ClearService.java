@@ -10,6 +10,7 @@ public class ClearService {
 
     /**
      * Delete all data from the database
+     *
      * @return the associated response object
      */
     public TableModResponse clear() {
@@ -35,8 +36,7 @@ public class ClearService {
             response.setMessage("Clear succeeded.");
             response.setSuccess(true);
             return response;
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 

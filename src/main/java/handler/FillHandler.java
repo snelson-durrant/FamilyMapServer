@@ -20,7 +20,7 @@ public class FillHandler implements HttpHandler {
 
         try {
 
-            if (exchange.getRequestMethod().toLowerCase().equals("post")) {
+            if (exchange.getRequestMethod().equalsIgnoreCase("post")) {
 
                 FillService hlFillService = new FillService();
                 String[] parameters = exchange.getRequestURI().toString().split("/");

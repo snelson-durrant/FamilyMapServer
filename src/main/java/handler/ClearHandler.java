@@ -17,7 +17,7 @@ public class ClearHandler implements HttpHandler {
 
         try {
 
-            if (exchange.getRequestMethod().toLowerCase().equals("post")) {
+            if (exchange.getRequestMethod().equalsIgnoreCase("post")) {
 
                 ClearService hlClearService = new ClearService();
                 TableModResponse hlClearResponse = hlClearService.clear();

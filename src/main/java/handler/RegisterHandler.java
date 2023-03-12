@@ -20,7 +20,7 @@ public class RegisterHandler implements HttpHandler {
 
         try {
 
-            if (exchange.getRequestMethod().toLowerCase().equals("post")) {
+            if (exchange.getRequestMethod().equalsIgnoreCase("post")) {
 
                 Reader reader = new InputStreamReader(exchange.getRequestBody());
                 RegisterRequest registerReqObj = Decoder.decodeRegisterReq(reader);

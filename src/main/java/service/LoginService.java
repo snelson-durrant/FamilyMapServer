@@ -15,6 +15,7 @@ public class LoginService {
 
     /**
      * Log in the user and return an authtoken
+     *
      * @param loginRequest login credentials
      * @return the associated response object
      */
@@ -54,8 +55,7 @@ public class LoginService {
             response.setPersonID(user.getPersonID());
             response.setSuccess(true);
             return response;
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 

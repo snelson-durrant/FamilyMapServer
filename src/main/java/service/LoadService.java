@@ -12,6 +12,7 @@ public class LoadService {
 
     /**
      * Clear the database and load in new data
+     *
      * @param loadRequest data to load
      * @return the associated response object
      */
@@ -59,8 +60,7 @@ public class LoadService {
             response.setSuccess(true);
 
             return response;
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 

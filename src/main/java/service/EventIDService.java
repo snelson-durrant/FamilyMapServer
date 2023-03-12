@@ -13,9 +13,10 @@ public class EventIDService {
 
     /**
      * Return a single Event object with the specified ID
-     * @return the associated response object
+     *
      * @param authtoken string given for authentication
-     * @param eventID unique string used to identify the event
+     * @param eventID   unique string used to identify the event
+     * @return the associated response object
      */
     public EventIDResponse eventID(String authtoken, String eventID) {
 
@@ -91,8 +92,7 @@ public class EventIDService {
                 return response;
             }
 
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 
