@@ -255,7 +255,7 @@ public class PersonDAO {
         int incBirth = randomGen.nextInt(25);
         int incDeath = randomGen.nextInt(50);
         int deathYear = birthYear + incDeath;
-        birthYear = birthYear - 20 - incBirth;
+        birthYear = birthYear - 25 - incBirth;
 
         Event birthEvent = new Event(birthID, user.getUsername(), thisID, locations.getLocation(birthInt).getLatitude(),
                 locations.getLocation(birthInt).getLongitude(), locations.getLocation(birthInt).getCountry(),
