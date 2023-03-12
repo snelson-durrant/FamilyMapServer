@@ -12,18 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FillServiceTest {
 
     private FillService fillService;
-    private TableModResponse fillResponse;
-    private RegisterService registerService;
     private RegisterRequest registerRequest;
     private RegisterResponse registerResponse;
-    private ClearService clearService = new ClearService();
-    private EventService eventService = new EventService();
-    private PersonService personService = new PersonService();
+    private ClearService clearService;
+    private EventService eventService;
+    private PersonService personService;
 
     @BeforeEach
     public void setUp() {
 
-        registerService = new RegisterService();
+        clearService = new ClearService();
+        eventService = new EventService();
+        personService = new PersonService();
+
+        RegisterService registerService = new RegisterService();
         registerRequest = new RegisterRequest();
         registerRequest.setUsername("john");
         registerRequest.setPassword("1234");
@@ -56,7 +58,7 @@ public class FillServiceTest {
     @Test
     public void fillFail() {
 
-        fillResponse = fillService.fill("random username", 1);
+        TableModResponse fillResponse = fillService.fill("random username", 1);
         assertFalse(fillResponse.isSuccess());
         fillResponse = fillService.fill(registerResponse.getUsername(), -1);
         assertFalse(fillResponse.isSuccess());

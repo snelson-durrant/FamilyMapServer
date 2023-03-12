@@ -12,15 +12,17 @@ public class ClearServiceTest {
     private ClearService clearService;
     private RegisterService registerService;
     private RegisterRequest registerRequest;
-    private RegisterResponse registerResponse;
-    private EventService eventService = new EventService();
-    private PersonService personService = new PersonService();
+    private EventService eventService;
+    private PersonService personService;
     String testAuthtoken;
 
     @BeforeEach
     public void setUp() {
 
         clearService = new ClearService();
+        eventService = new EventService();
+        personService = new PersonService();
+
         registerService = new RegisterService();
         registerRequest = new RegisterRequest();
         registerRequest.setUsername("john");
@@ -34,7 +36,7 @@ public class ClearServiceTest {
     @Test
     public void clearPass() {
 
-        registerResponse = registerService.register(registerRequest);
+        RegisterResponse registerResponse = registerService.register(registerRequest);
         testAuthtoken = registerResponse.getAuthtoken();
 
         clearService.clear();

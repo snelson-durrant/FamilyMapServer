@@ -13,12 +13,16 @@ public class RegisterServiceTest {
     private RegisterService registerService;
     private RegisterRequest registerRequest;
     private RegisterResponse registerResponse;
-    private ClearService clearService = new ClearService();
-    private EventService eventService = new EventService();
-    private PersonService personService = new PersonService();
+    private ClearService clearService;
+    private EventService eventService;
+    private PersonService personService;
 
     @BeforeEach
     public void setUp() {
+
+        clearService = new ClearService();
+        eventService = new EventService();
+        personService = new PersonService();
 
         registerService = new RegisterService();
         registerRequest = new RegisterRequest();

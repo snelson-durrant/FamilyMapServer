@@ -16,12 +16,10 @@ public class LoadServiceTest {
     private LoadService loadService;
     private LoadRequest loadRequest;
     private LoadRequest invalidLoadRequest;
-    private ClearService clearService = new ClearService();
-    private EventService eventService = new EventService();
-    private PersonService personService = new PersonService();
-    private LoginService loginService = new LoginService();
-    private RegisterResponse registerResponse;
-    private LoginRequest loginRequest;
+    private ClearService clearService;
+    private EventService eventService;
+    private PersonService personService;
+    private LoginService loginService;
 
     @BeforeEach
     public void setUp() {
@@ -36,6 +34,11 @@ public class LoadServiceTest {
 
         Event event = new Event("9876", "john", "4321", 0F, 0F,
                 "USA", "Provo", "birth", 2000);
+
+        clearService = new ClearService();
+        eventService = new EventService();
+        personService = new PersonService();
+        loginService = new LoginService();
 
         loadService = new LoadService();
         loadRequest = new LoadRequest();
@@ -68,10 +71,10 @@ public class LoadServiceTest {
 
         TableModResponse loadResponse = loadService.load(loadRequest);
         assertTrue(loadResponse.isSuccess());
-        loginRequest = new LoginRequest();
+        LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("john");
         loginRequest.setPassword("1234");
-        registerResponse = loginService.login(loginRequest);
+        RegisterResponse registerResponse = loginService.login(loginRequest);
         assertEquals(1, personService.person(registerResponse.getAuthtoken()).getData().length);
         assertEquals(1, eventService.event(registerResponse.getAuthtoken()).getData().length);
     }

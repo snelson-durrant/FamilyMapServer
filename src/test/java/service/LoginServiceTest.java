@@ -14,14 +14,14 @@ public class LoginServiceTest {
     private LoginService loginService;
     private LoginRequest loginRequest;
     private RegisterResponse loginResponse;
-    private RegisterService registerService;
     private RegisterRequest registerRequest;
-    private ClearService clearService = new ClearService();
+    private ClearService clearService;
 
     @BeforeEach
     public void setUp() {
 
-        registerService = new RegisterService();
+        clearService = new ClearService();
+        RegisterService registerService = new RegisterService();
         registerRequest = new RegisterRequest();
         registerRequest.setUsername("john");
         registerRequest.setPassword("1234");
