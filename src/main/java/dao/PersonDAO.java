@@ -176,7 +176,12 @@ public class PersonDAO {
         this.lastNames = Decoder.decodeNameArray("json/snames.json");
         this.locations = Decoder.decodeLocationArray("json/locations.json");
 
+        UserDAO userDAO = new UserDAO(conn);
         EventDAO eventDAO = new EventDAO(conn);
+
+        if (userDAO.find(user.getUsername()) == null || gensLeft < 0) {
+            throw new DataAccessException("Error: invalid function inputs.");
+        }
 
         // create user person object
         Person person = new Person(user.getPersonID(), user.getUsername(), user.getFirstName(),

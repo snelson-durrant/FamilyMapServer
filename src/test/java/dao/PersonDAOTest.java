@@ -1,6 +1,7 @@
 package dao;
 
 import model.Person;
+import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,11 @@ public class PersonDAOTest {
     private Database db;
     private Person bestPerson;
     private Person secondPerson;
+    private User bestUser;
     private Person[] personArray;
     private PersonDAO eDao;
+    private UserDAO userDao;
+    private EventDAO eventDao;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
@@ -24,6 +28,8 @@ public class PersonDAOTest {
                 "Smith", "m", "h7ydk1980", "fr$th78_g", "_jdf789yt");
         secondPerson = new Person("7h5_&fjk890", "john.smith123", "Nelson",
                 "Durrant", "m", "asdk78sf", "sfdkj7810", "h_kfdsjfk");
+        bestUser = new User("mockuser", "123456", "email@email.com", "John",
+                "Smith", "m", "654321");
         personArray = new Person[2];
         personArray[0] = bestPerson;
         personArray[1] = secondPerson;
@@ -31,6 +37,10 @@ public class PersonDAOTest {
         Connection conn = db.getConnection();
         eDao = new PersonDAO(conn);
         eDao.clear();
+        userDao = new UserDAO(conn);
+        userDao.clear();
+        eventDao = new EventDAO(conn);
+        eventDao.clear();
     }
 
     @AfterEach
@@ -118,6 +128,23 @@ public class PersonDAOTest {
         assertEquals(personArray.length, compareTest.length);
     }
 
-    // TODO ADD TESTS FOR DATA GENERATION
+    @Test
+    public void dataGenerationPass() throws DataAccessException {
+
+        userDao.insert(bestUser);
+        eDao.dataGeneration(bestUser, 4);
+        assertEquals(31, eDao.findUserPeople(bestUser.getUsername()).length);
+        assertEquals(91, eventDao.findUserEvents(bestUser.getUsername()).length);
+    }
+
+    @Test
+    public void dataGenerationFail() throws DataAccessException {
+
+        assertThrows(DataAccessException.class, () -> eDao.dataGeneration(bestUser, 4));
+        userDao.insert(bestUser);
+        assertThrows(DataAccessException.class, () -> eDao.dataGeneration(bestUser, -1));
+        assertEquals(0, eDao.findUserPeople(bestUser.getUsername()).length);
+        assertEquals(0, eventDao.findUserEvents(bestUser.getUsername()).length);
+    }
 
 }
