@@ -50,11 +50,12 @@ public class RegisterHandler implements HttpHandler {
             }
 
             if (!success) {
+
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
+
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
@@ -62,6 +63,7 @@ public class RegisterHandler implements HttpHandler {
     }
 
     private void writeString(String str, OutputStream os) throws IOException {
+
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
         sw.flush();

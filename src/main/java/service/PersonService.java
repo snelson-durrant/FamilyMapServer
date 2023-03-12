@@ -13,8 +13,9 @@ public class PersonService {
 
     /**
      * Return all family member of the current user
-     * @return the associated response object
+     *
      * @param authtoken string given for authentication
+     * @return the associated response object
      */
     public PersonResponse person(String authtoken) {
 
@@ -59,8 +60,7 @@ public class PersonService {
 
                 return response;
             }
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 
@@ -69,5 +69,4 @@ public class PersonService {
             return response;
         }
     }
-
 }

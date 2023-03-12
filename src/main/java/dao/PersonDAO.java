@@ -28,6 +28,7 @@ public class PersonDAO {
 
     /**
      * Creates a PersonDAO object
+     *
      * @param conn the database connection
      */
     public PersonDAO(Connection conn) {
@@ -36,6 +37,7 @@ public class PersonDAO {
 
     /**
      * Inserts the data from a Person object into the database
+     *
      * @param person the Person object
      * @throws DataAccessException
      */
@@ -64,6 +66,7 @@ public class PersonDAO {
 
     /**
      * Finds the database entry associated with the personID
+     *
      * @param personID the person's identification
      * @return an AuthToken object containing the found data
      * @throws DataAccessException
@@ -96,12 +99,13 @@ public class PersonDAO {
 
     /**
      * Clears the Person table from the database
+     *
      * @throws DataAccessException
      */
     public void clear() throws DataAccessException {
 
         String sql = "DELETE FROM Person";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -113,6 +117,7 @@ public class PersonDAO {
 
     /**
      * Finds all the people associated with a certain user
+     *
      * @param username handle used to identify the user
      * @return an array of People objects
      */
@@ -146,6 +151,7 @@ public class PersonDAO {
 
     /**
      * Removes all the people associated with a certain user
+     *
      * @param username handle used to identify the user
      */
     public void clearUserPeople(String username) throws DataAccessException {
@@ -217,7 +223,7 @@ public class PersonDAO {
         this.insert(person);
     }
 
-    private void recDataGeneration (User user, int gensLeft, String gender, String thisID, String spouseID, int birthYear, EventDAO eDAO) throws DataAccessException {
+    private void recDataGeneration(User user, int gensLeft, String gender, String thisID, String spouseID, int birthYear, EventDAO eDAO) throws DataAccessException {
 
         Person person;
         Random randomGen = new Random();

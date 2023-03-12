@@ -1,3 +1,5 @@
 package json;
 
-public interface JSONObject { }
+// common interface to simplify the encoder logic
+public interface JSONObject {
+}

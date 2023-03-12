@@ -46,18 +46,20 @@ public class Event {
 
     /**
      * Creates an Event object
-     * @param eventID unique string used to identify the event
+     *
+     * @param eventID            unique string used to identify the event
      * @param associatedUsername handle of the user associated with the event
-     * @param personID unique string used to identify the person
-     * @param latitude latitude measurement of event location
-     * @param longitude longitude measurement of event location
-     * @param country country of event location
-     * @param city city of event location
-     * @param eventType type of event
-     * @param year year in which the event occurred
+     * @param personID           unique string used to identify the person
+     * @param latitude           latitude measurement of event location
+     * @param longitude          longitude measurement of event location
+     * @param country            country of event location
+     * @param city               city of event location
+     * @param eventType          type of event
+     * @param year               year in which the event occurred
      */
     public Event(String eventID, String associatedUsername, String personID, Float latitude, Float longitude,
                  String country, String city, String eventType, Integer year) {
+
         this.eventID = eventID;
         this.associatedUsername = associatedUsername;
         this.personID = personID;
@@ -143,15 +145,16 @@ public class Event {
 
     /**
      * Overrides the equals() function to be true only when all private variables are the same
+     *
      * @param o
      * @return
      */
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
         return Objects.equals(eventID, event.eventID) && Objects.equals(associatedUsername, event.associatedUsername) && Objects.equals(personID, event.personID) && Objects.equals(latitude, event.latitude) && Objects.equals(longitude, event.longitude) && Objects.equals(country, event.country) && Objects.equals(city, event.city) && Objects.equals(eventType, event.eventType) && Objects.equals(year, event.year);
     }
-
 }

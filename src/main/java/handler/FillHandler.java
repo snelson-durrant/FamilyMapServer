@@ -30,23 +30,25 @@ public class FillHandler implements HttpHandler {
 
                     hlFillResponse = hlFillService.fill(parameters[2], 4); // default #
                     if (hlFillResponse.isSuccess()) {
+
                         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                     } else {
+
                         exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                     }
-
                 } else if (parameters.length == 4) {
 
                     try {
 
                         hlFillResponse = hlFillService.fill(parameters[2], Integer.parseInt(parameters[3]));
                         if (hlFillResponse.isSuccess()) {
+
                             exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                         } else {
+
                             exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                         }
-                    }
-                    catch (NumberFormatException ex) {
+                    } catch (NumberFormatException ex) {
 
                         hlFillResponse = new TableModResponse();
                         hlFillResponse.setSuccess(false);
@@ -74,8 +76,7 @@ public class FillHandler implements HttpHandler {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();

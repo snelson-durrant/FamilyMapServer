@@ -1,5 +1,6 @@
 package model;
 
+// class used to interpret JSON strings for random generation
 public class Location {
 
     private String country = new String();

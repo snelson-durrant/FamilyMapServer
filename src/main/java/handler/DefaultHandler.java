@@ -19,14 +19,17 @@ public class DefaultHandler implements HttpHandler {
             String requestedURI = exchange.getRequestURI().toString();
 
             if (requestedURI.equals("/")) {
+
                 pathToFile = FileSystems.getDefault().getPath("web/index.html");
             } else {
+
                 pathToFile = FileSystems.getDefault().getPath("web" + requestedURI);
             }
 
             File addrPage = new File(pathToFile.toUri());
             if (!addrPage.isFile()) {
 
+                // sends 404 error page in case of invalid website file
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
                 pathToFile = FileSystems.getDefault().getPath("web/HTML/404.html");
                 Files.copy(pathToFile, exchange.getResponseBody());
@@ -37,12 +40,11 @@ public class DefaultHandler implements HttpHandler {
                 Files.copy(pathToFile, exchange.getResponseBody());
                 exchange.getResponseBody().close();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
+
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
             e.printStackTrace();
         }
-
     }
 }

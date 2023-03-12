@@ -1,5 +1,6 @@
 package model;
 
+// class used to interpret JSON strings for random generation
 public class LocationArray {
 
     private Location[] data;

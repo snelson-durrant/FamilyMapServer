@@ -13,9 +13,10 @@ public class PersonIDService {
 
     /**
      * Return a single Person object with the specified ID
-     * @return the associated response object
+     *
      * @param authtoken string given for authentication
-     * @param personID unique string used to identify the person
+     * @param personID  unique string used to identify the person
+     * @return the associated response object
      */
     public PersonIDResponse personID(String authtoken, String personID) {
         Database db = new Database();
@@ -61,7 +62,6 @@ public class PersonIDService {
 
                             return response;
                         }
-
                     }
 
                     response.setMessage("Error: Person does not exist.");
@@ -88,8 +88,7 @@ public class PersonIDService {
 
                 return response;
             }
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 
@@ -98,5 +97,4 @@ public class PersonIDService {
             return response;
         }
     }
-
 }

@@ -28,8 +28,10 @@ public class LoadHandler implements HttpHandler {
                 TableModResponse hlLoadResponse = hlLoadService.load(loadReqObj);
 
                 if (hlLoadResponse.isSuccess()) {
+
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 } else {
+
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 }
 
@@ -46,8 +48,7 @@ public class LoadHandler implements HttpHandler {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();

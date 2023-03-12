@@ -17,6 +17,7 @@ public class UserDAO {
 
     /**
      * Creates a UserDAO object
+     *
      * @param conn the database connection
      */
     public UserDAO(Connection conn) {
@@ -25,6 +26,7 @@ public class UserDAO {
 
     /**
      * Inserts the data from a User object into the database
+     *
      * @param user the User object
      * @throws DataAccessException
      */
@@ -52,6 +54,7 @@ public class UserDAO {
 
     /**
      * Finds the database entry associated with the username
+     *
      * @param username the user's identification
      * @return a User object containing the found data
      * @throws DataAccessException
@@ -85,6 +88,7 @@ public class UserDAO {
 
     /**
      * Clears the User table from the database
+     *
      * @throws DataAccessException
      */
     public void clear() throws DataAccessException {

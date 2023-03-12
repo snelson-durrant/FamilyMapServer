@@ -15,6 +15,7 @@ public class RegisterService {
 
     /**
      * Create a new account, generate data, log the user in, and return an authtoken
+     *
      * @param registerRequest new login credentials
      * @return the associated response object
      */
@@ -54,7 +55,6 @@ public class RegisterService {
                 db.closeConnection(true);
 
                 return response;
-
             } else {
 
                 response.setMessage("Error: User already exists.");
@@ -64,8 +64,7 @@ public class RegisterService {
 
                 return response;
             }
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 

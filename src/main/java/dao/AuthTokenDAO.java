@@ -16,6 +16,7 @@ public class AuthTokenDAO {
 
     /**
      * Creates an AuthTokenDAO object
+     *
      * @param conn the database connection
      */
     public AuthTokenDAO(Connection conn) {
@@ -24,6 +25,7 @@ public class AuthTokenDAO {
 
     /**
      * Inserts the data from an AuthToken object into the database
+     *
      * @param authtoken the AuthToken object
      * @throws DataAccessException
      */
@@ -45,6 +47,7 @@ public class AuthTokenDAO {
 
     /**
      * Finds the database entry associated with the username
+     *
      * @param authtoken unique string used for authentication
      * @return an AuthToken object containing the found data
      * @throws DataAccessException
@@ -75,6 +78,7 @@ public class AuthTokenDAO {
 
     /**
      * Clears the AuthToken table from the database
+     *
      * @throws DataAccessException
      */
     public void clear() throws DataAccessException {

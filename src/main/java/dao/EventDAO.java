@@ -17,6 +17,7 @@ public class EventDAO {
 
     /**
      * Creates an EventDAO object
+     *
      * @param conn the database connection
      */
     public EventDAO(Connection conn) {
@@ -25,6 +26,7 @@ public class EventDAO {
 
     /**
      * Inserts the data from an Event object into the database
+     *
      * @param event the Event object
      * @throws DataAccessException
      */
@@ -54,6 +56,7 @@ public class EventDAO {
 
     /**
      * Finds the database entry associated with the eventID
+     *
      * @param eventID the event's identification
      * @return an Event object containing the found data
      * @throws DataAccessException
@@ -88,6 +91,7 @@ public class EventDAO {
 
     /**
      * Clears the Event table from the database
+     *
      * @throws DataAccessException
      */
     public void clear() throws DataAccessException {
@@ -105,6 +109,7 @@ public class EventDAO {
 
     /**
      * Finds all the events associated with a certain user
+     *
      * @param username handle used to identify the user
      * @return an array of Event objects
      */
@@ -139,6 +144,7 @@ public class EventDAO {
 
     /**
      * Removes all the events associated with a certain user
+     *
      * @param username handle used to identify the user
      */
     public void clearUserEvents(String username) throws DataAccessException {

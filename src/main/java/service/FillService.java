@@ -16,9 +16,10 @@ public class FillService {
 
     /**
      * Populate the database with generated data
-     * @return the associated response object
-     * @param username handle used to identify the user
+     *
+     * @param username  handle used to identify the user
      * @param numOfGens the number of generations to generate
+     * @return the associated response object
      */
     public TableModResponse fill(String username, int numOfGens) {
 
@@ -39,7 +40,6 @@ public class FillService {
 
             if (thisUser != null) {
 
-                // start recursion
                 personDAO.dataGeneration(thisUser, numOfGens);
 
                 int personCount = personDAO.findUserPeople(username).length;
@@ -58,8 +58,7 @@ public class FillService {
 
             db.closeConnection(true);
             return response;
-        }
-        catch (DataAccessException e) {
+        } catch (DataAccessException e) {
 
             db.closeConnection(false);
 

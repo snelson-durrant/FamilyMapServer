@@ -2,6 +2,7 @@ package handler;
 
 import java.io.*;
 import java.net.*;
+
 import com.sun.net.httpserver.*;
 import json.Encoder;
 import response.TableModResponse;
@@ -22,8 +23,10 @@ public class ClearHandler implements HttpHandler {
                 TableModResponse hlClearResponse = hlClearService.clear();
 
                 if (hlClearResponse.isSuccess()) {
+
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 } else {
+
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 }
 
@@ -40,8 +43,7 @@ public class ClearHandler implements HttpHandler {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
 
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
             exchange.getResponseBody().close();
