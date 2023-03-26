@@ -1,13 +1,8 @@
 package service;
 
 import dao.*;
-import model.Event;
-import model.Person;
 import model.User;
 import response.TableModResponse;
-
-import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  * Populates the server's database with generated data
