@@ -3,8 +3,8 @@ package model;
 // class used to interpret JSON strings for random generation
 public class Location {
 
-    private final String country = "";
-    private final String city = "";
+    private String country;
+    private String city;
     private float latitude;
     private float longitude;
 
